@@ -57,29 +57,36 @@ const themeManager = {
         const webview = document.getElementById('game-view');
         if (!webview) return;
 
-        const color = (tema === 'dark') ? '#000000' : '#2e7d32'; // Negro o verde original
+        const colorHex = (tema === 'dark') ? '#000000' : '#2e7d32';
         
         webview.executeJavaScript(`
             (function() {
-                const canvas = document.querySelector('canvas');
-                if (!canvas) return;
-                
-                const ctx = canvas.getContext('2d');
-                if (!ctx.__originalFillRect) {
-                    ctx.__originalFillRect = ctx.fillRect;
-                }
-
-                // Sobrescribir fillRect para interceptar el dibujo del fondo
-                ctx.fillRect = function(x, y, w, h) {
-                    if (w === canvas.width && h === canvas.height) {
-                        const current = ctx.fillStyle;
-                        ctx.fillStyle = '${color}';
-                        ctx.__originalFillRect.call(ctx, x, y, w, h);
-                        ctx.fillStyle = current;
-                    } else {
-                        ctx.__originalFillRect.call(ctx, x, y, w, h);
+                function makeFieldBlack() {
+                    const canvas = document.querySelector('canvas');
+                    if (!canvas) {
+                        setTimeout(makeFieldBlack, 200);
+                        return;
                     }
-                };
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Guardar referencia al original si no existe
+                    if (!ctx.__originalFillRect) {
+                        ctx.__originalFillRect = ctx.fillRect;
+                    }
+
+                    ctx.fillRect = function(x, y, w, h) {
+                        if (w === canvas.width && h === canvas.height) {
+                            // Es el fondo → pintar el color del tema
+                            const old = ctx.fillStyle;
+                            ctx.fillStyle = '${colorHex}';
+                            ctx.__originalFillRect.call(ctx, x, y, w, h);
+                            ctx.fillStyle = old;
+                        } else {
+                            ctx.__originalFillRect.call(ctx, x, y, w, h);
+                        }
+                    };
+                }
+                makeFieldBlack();
             })();
         `);
     },

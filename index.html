@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Haxball Ultra Client</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos adicionales para el contenedor del juego */
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+        }
+        #game-view {
+            width: 100%; height: 100%; border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- El webview cargará el juego -->
+    <webview id="game-view" src="https://www.haxball.com/play" preload="./preload.js"></webview>
+
+    <script src="theme-ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+/* VARIABLES DE TEMA - HAXBALL ULTRA CLIENT */
+:root {
+    /* Tema Claro (Default) */
+    --bg-main: #ffffff;
+    --bg-panel: #f3f4f6;
+    --text-main: #1a1a1a;
+    --text-muted: #666666;
+    --accent: #22c55e; /* Verde Haxball */
+    --border: #e5e7eb;
+    --btn-bg: #e5e7eb;
+    --btn-hover: #d1d5db;
+}
+
+/* Tema Oscuro */
+[data-theme="dark"] {
+    --bg-main: #000000;
+    --bg-panel: #0a0a0a;
+    --text-main: #f9fafb;
+    --text-muted: #9ca3af;
+    --accent: #22c55e;
+    --border: #1f1f1f;
+    --btn-bg: #161616;
+    --btn-hover: #262626;
+}
+
+/* Estilos de la Interfaz de la App */
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Panel de Control de Temas (Flotante o lateral) */
+#theme-panel {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    z-index: 1000000;
+    display: flex;
+    gap: 5px;
+}
+
+#theme-panel button {
+    background-color: var(--btn-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+#theme-panel button:hover {
+    background-color: var(--btn-hover);
+}
+
+#theme-panel button.active {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Contenedor del Juego (WebView / iframe) */
+#game-container {
+    flex: 1;
+    background: #000; /* Siempre negro para evitar flash */
+}

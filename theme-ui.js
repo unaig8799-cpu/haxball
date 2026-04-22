@@ -56,39 +56,9 @@ const themeManager = {
     aplicarColorCampo(tema) {
         const webview = document.getElementById('game-view');
         if (!webview) return;
-
-        const colorHex = (tema === 'dark') ? '#000000' : '#2e7d32';
         
-        webview.executeJavaScript(`
-            (function() {
-                function makeFieldBlack() {
-                    const canvas = document.querySelector('canvas');
-                    if (!canvas) {
-                        setTimeout(makeFieldBlack, 200);
-                        return;
-                    }
-                    const ctx = canvas.getContext('2d');
-                    
-                    // Guardar referencia al original si no existe
-                    if (!ctx.__originalFillRect) {
-                        ctx.__originalFillRect = ctx.fillRect;
-                    }
-
-                    ctx.fillRect = function(x, y, w, h) {
-                        if (w === canvas.width && h === canvas.height) {
-                            // Es el fondo → pintar el color del tema
-                            const old = ctx.fillStyle;
-                            ctx.fillStyle = '${colorHex}';
-                            ctx.__originalFillRect.call(ctx, x, y, w, h);
-                            ctx.fillStyle = old;
-                        } else {
-                            ctx.__originalFillRect.call(ctx, x, y, w, h);
-                        }
-                    };
-                }
-                makeFieldBlack();
-            })();
-        `);
+        // Enviamos el tema al contexto del webview
+        webview.executeJavaScript(`window.__temaActual = '${tema}';`);
     },
 
     setTheme(pref) {

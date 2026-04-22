@@ -65,6 +65,24 @@ function inyectarTema() {
 // ==========================================
 window.requestAnimationFrame = (cb) => setTimeout(() => cb(performance.now()), 1);
 
+// ==========================================
+// HACK DE CANVAS PARA FONDO DINÁMICO
+// ==========================================
+window.__temaActual = 'dark'; // Valor por defecto
+
+const originalFillRect = CanvasRenderingContext2D.prototype.fillRect;
+CanvasRenderingContext2D.prototype.fillRect = function(x, y, w, h) {
+    if (this.canvas && w === this.canvas.width && h === this.canvas.height && w > 0) {
+        // Es el dibujo del fondo del estadio
+        const oldFill = this.fillStyle;
+        this.fillStyle = window.__temaActual === 'light' ? '#2e7d32' : '#000000';
+        originalFillRect.call(this, x, y, w, h);
+        this.fillStyle = oldFill;
+    } else {
+        originalFillRect.call(this, x, y, w, h);
+    }
+};
+
 window.addEventListener('DOMContentLoaded', () => {
     inyectarTema();
 
